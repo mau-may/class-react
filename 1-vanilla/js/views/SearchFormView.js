@@ -2,6 +2,8 @@ import { on, qs } from "../helpers.js";
 import View from "./View.js";
 
 const tag = "[SearchFormView]";
+//이제 검색
+//X버튼을 클릭하거나 검색어를 삭제하면 검색 결과를 삭제한다..
 
 export default class SearchFormView extends View {
     constructor() {
@@ -22,11 +24,11 @@ export default class SearchFormView extends View {
     bindEvent(){
         on(this.inputElement, "keyup", () => this.handleKeyup());
         on(this.element, "submit", event => this.handleSubmit(event));
-    
+        on(this.resetElement, "click", () => this.handleSearchReset());
     }
 
     handleKeyup() {
-        console.log(tag, "handleKeyup", this.inputElement.value);
+        // console.log(tag, "handleKeyup", this.inputElement.value);
         const { value } = this.inputElement;
         this.showResetButton(value.length > 0)
         
@@ -38,5 +40,11 @@ export default class SearchFormView extends View {
         const { value } = this.inputElement;
 
         this.emit("@submit", { value });
+    }
+
+    handleSearchReset(){
+        console.log(tag, 'handleSearchReset');
+
+        this.emit("@reset"); //외부에 알려주는 역할
     }
 }
