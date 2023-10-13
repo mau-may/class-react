@@ -28,10 +28,12 @@ export default class SearchFormView extends View {
     }
 
     handleKeyup() {
-        // console.log(tag, "handleKeyup", this.inputElement.value);
         const { value } = this.inputElement;
+
+        if(value.length == 0){ //검색어 삭제 시 초기화
+            this.handleSearchReset();
+        }
         this.showResetButton(value.length > 0)
-        
     }
 
     handleSubmit(event){
