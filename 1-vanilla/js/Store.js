@@ -13,7 +13,6 @@ export default class Store {
 
   search(keyword) {
     this.searchKeyword = keyword;
-    console.log(this.storage);
     const dataList = this.storage.productData; //변수로 지정
 
     //검색 결과 filter 처리
@@ -34,7 +33,6 @@ export default class Store {
     const hasHistory = this.storage.historyData.some(
       (history) => history.keyword === keyword
     );
-    if (hasHistory) this.removeHistory(keyword);
 
     const date = new Date();
     this.storage.historyData.push({ keyword, date });
