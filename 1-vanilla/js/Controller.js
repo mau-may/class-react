@@ -5,18 +5,22 @@ export default class Controller {
     { 
       searchFormView,
       searchResultView,
-      tabView
+      tabView,
+      historyListView,
+      keywordListView
     }
    ) {
-    console.log(tag)
     this.store = store;
 
     this.SearchFormView = searchFormView;
     this.SearchReusltView = searchResultView;
     this.tabView = tabView;
+    this.HistoryListView = historyListView;
+    this.KeywordListView = keywordListView;
 
     this.subscribeViewEvents();
     this.render(); //기본 실행
+    this.tabChange(); //탭 클릭 후 화면 변경
   }
 
   subscribeViewEvents(){
@@ -30,7 +34,6 @@ export default class Controller {
     this.store.search(keyword);
 
     this.render(); //결과 값으로 render
-
   }
 
   render(){
@@ -44,8 +47,7 @@ export default class Controller {
     }
 
     this.searchReset();
-    this.tabView.show();
-
+    this.tabView.show(this.store.selectedTab);
   }
 
   //초기화
@@ -54,6 +56,20 @@ export default class Controller {
     this.store.searchResult = [];
     this.SearchFormView.showResetButton(false);
     this.SearchReusltView.resetResult();
+    
+    this.tabView.show(); //tab view show
+  }
+
+  tabChange(){
+    //tab click 시 실행 함수
+    this.tabView.on('@tabclick', event => 
+      this.change(event.detail)
+    )
+  }
+
+  change(tab){
+    console.log(tab);
+
   }
 
 }

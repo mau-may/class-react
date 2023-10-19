@@ -1,5 +1,7 @@
-const tag = "[store]";
+import { Tab } from "./views/TabView.js";
 
+const tag = "[store]";
+//MVC 패턴의 Model 역할
 export default class Store {
   constructor(storage) {
     console.log(tag);
@@ -9,6 +11,7 @@ export default class Store {
   
     this.searchKeyword = "";
     this.searchResult = [];
+    this.selectedTab = Tab.KEYWORD;
   }
 
   search(keyword) {

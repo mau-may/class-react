@@ -1,4 +1,4 @@
-import { on, qs } from "../helpers.js";
+import { on, qs, qsAll } from "../helpers.js";
 import View from "./View.js";
 
 const tag = "[TabView]";
@@ -13,6 +13,7 @@ const TabLabel = {
   [Tab.HISTORY]: "최근 검색어",
 };
 
+//어디선가 사용해야하므로 export로 빼줌
 export default class TabView extends View {
     constructor() {
       console.log(tag);
@@ -20,11 +21,20 @@ export default class TabView extends View {
       super(qs("#tab-view")); //이렇게 하면 this.element 에  담김
 
       this.template = new Template();
+
+      this.bindEvent();
+
+
+      //Todo: 이벤트 바인딩 필요 (클릭 함수 실행!)
+      // this.bindEvent();
     }
 
-    show() {
-      console.log('show!');
+    show(selectedTab) {
       this.element.innerHTML = this.template.getTabList();
+
+      qsAll("li", this.element).forEach(li => {
+        li.className = li.dataset.tab === selectedTab ? "active" : "";
+      });
 
       super.show();
     }
@@ -33,12 +43,20 @@ export default class TabView extends View {
       this.element.style.display = "none";
     }
 
+    bindEvent(){
+      on(this.element, "click", event => this.tabClick(event)); //li 탭 속성이 담겨야하므로 event로 담음
+    }
+
+    tabClick(event){
+      const tabValue = event.target.dataset.tab;
+
+      this.show(tabValue);
+
+      this.emit("@tabclick", tabValue);
+    }
 }
 
 class Template {
-  _getTab({key, label}){
-    return `<li data-tab="${key}">${label}</li>`
-  }
 
   getTabList(){
     return `
@@ -49,7 +67,10 @@ class Template {
             .join("")} 
       </ul>
     `;
+  }
 
+  _getTab({key, label}){
+    return `<li data-tab="${key}">${label}</li>`
   }
 
 }
