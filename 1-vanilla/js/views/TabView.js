@@ -1,4 +1,4 @@
-import { on, qs, qsAll } from "../helpers.js";
+import { delegate, on, qs, qsAll } from "../helpers.js";
 import View from "./View.js";
 
 const tag = "[TabView]";
@@ -22,11 +22,8 @@ export default class TabView extends View {
 
       this.template = new Template();
 
+      //클릭 함수 실행
       this.bindEvent();
-
-
-      //Todo: 이벤트 바인딩 필요 (클릭 함수 실행!)
-      // this.bindEvent();
     }
 
     show(selectedTab) {
@@ -44,7 +41,8 @@ export default class TabView extends View {
     }
 
     bindEvent(){
-      on(this.element, "click", event => this.tabClick(event)); //li 탭 속성이 담겨야하므로 event로 담음
+      delegate(this.element, "click", "li", event => this.tabClick(event));
+      // on(this.element, "click", event => this.tabClick(event)); //li 탭 속성이 담겨야하므로 event로 담음
     }
 
     tabClick(event){
